@@ -70,6 +70,21 @@
         .dialog-body a { color: #a3e635; text-decoration: underline; }
         .dialog-body a:hover { color: #fbbf24; }
         .dialog-footer { border-top: 1px solid #1a2e1a; padding: 10px 20px; font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #a3e635; opacity: 0.7; display: flex; justify-content: space-between; }
+    /* Alternating colors for the model dropdown */
+select option:nth-child(even) {
+    background-color: #1a1a1a; /* Slightly lighter than the main card */
+}
+
+select option:nth-child(odd) {
+    background-color: #141414; /* Matches the card background */
+}
+
+/* Force colors on Chrome/Edge/Firefox */
+select option {
+    background: #141414;
+    color: #fff;
+    padding: 10px;
+}
     </style>
 </head>
 <body x-data="burnEngine()">
