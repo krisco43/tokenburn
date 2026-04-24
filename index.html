@@ -12,59 +12,35 @@
         * { font-family: "Inter", sans-serif !important; box-sizing: border-box; }
         
         body { 
-            background-color: #000000; 
-            color: #ffffff; 
-            margin: 0; 
-            padding: 40px 20px; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            min-height: 100vh;
+            background-color: #000000; color: #ffffff; margin: 0; padding: 40px 20px; 
+            display: flex; flex-direction: column; align-items: center; min-height: 100vh;
         }
 
-        .container { max-width: 1100px; width: 100%; flex: 1; position: relative; z-index: 10; }
+        .container { max-width: 1100px; width: 100%; flex: 1; }
         header { text-align: center; margin-bottom: 50px; }
-        
-        h1 { 
-            font-size: clamp(2.5rem, 8vw, 4rem); 
-            margin: 0; 
-            font-weight: 700; 
-            letter-spacing: -3px; 
-            text-transform: uppercase; 
-            line-height: 0.9; 
-        }
-
+        h1 { font-size: clamp(2.5rem, 8vw, 4rem); margin: 0; font-weight: 700; letter-spacing: -3px; text-transform: uppercase; line-height: 0.9; }
         .yellow { color: #fbbf24; }
         .green { color: #a3e635; }
 
         .main-grid { display: grid; grid-template-columns: 1fr; gap: 30px; align-items: start; }
         @media (min-width: 900px) { .main-grid { grid-template-columns: 1.8fr 1.2fr; } }
 
-        .card { 
-            background: #0a0a0a; 
-            border: 1px solid #1a2e1a; 
-            padding: 30px; 
-            border-radius: 12px;
-        }
-
-        .result-card { 
-            background: #000; 
-            border: 2px solid #a3e635; 
-            text-align: center; 
-            padding: 35px 25px;
-            border-radius: 12px;
-            box-shadow: 0 0 30px rgba(163, 230, 53, 0.1);
-        }
+        .card { background: #0a0a0a; border: 1px solid #1a2e1a; padding: 30px; border-radius: 12px; }
+        .result-card { background: #000; border: 2px solid #a3e635; text-align: center; padding: 35px 25px; border-radius: 12px; box-shadow: 0 0 30px rgba(163, 230, 53, 0.1); }
 
         .input-group { margin-bottom: 30px; }
         label { display: block; font-size: 11px; font-weight: 800; color: #a3e635; text-transform: uppercase; margin-bottom: 15px; letter-spacing: 0.1em; }
 
+        /* DROPDOWN COLOR ALTERNATION - Restored & Verified */
         select { 
-            width: 100%; background: #111111; color: #fbbf24; border: 1px solid #333; 
+            width: 100%; background: #111; color: #fbbf24; border: 1px solid #333; 
             padding: 16px; border-radius: 8px; font-size: 15px; appearance: none;
             background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fbbf24' stroke-width='3'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e"); 
             background-repeat: no-repeat; background-position: right 1.2rem center; background-size: 1.1em;
         }
+        select option { background: #111; }
+        select option:nth-child(odd) { color: #fbbf24; }
+        select option:nth-child(even) { color: #ffffff; }
 
         input[type="range"] { width: 100%; height: 10px; background: #222; accent-color: #fbbf24; margin-top: 15px; cursor: pointer; }
         .big-num { color: #fbbf24; font-size: 24px; font-weight: 700; }
@@ -78,32 +54,29 @@
 
         .total-price { font-size: 52px; font-weight: 800; margin: 15px 0; color: #FFFFFF; letter-spacing: -2px; }
 
-        /* Results Display */
+        /* Support Rows - High Contrast Text */
         .support-meta-wrap { margin-top: 25px; padding-top: 20px; border-top: 1px solid #222; text-align: left; }
         .support-row { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 12px; }
-        .support-key { color: #AAAAAA; text-transform: uppercase; font-weight: 800; } /* High contrast */
+        .support-key { color: #AAAAAA; text-transform: uppercase; font-weight: 800; }
         .support-val { color: #FFFFFF; font-weight: 600; }
 
         .btn-action { 
             display: block; text-decoration: none; text-align: center; padding: 18px; 
             border-radius: 10px; font-size: 13px; font-weight: 900; text-transform: uppercase; 
-            cursor: pointer; width: 100%; margin-top: 15px; transition: all 0.2s;
+            cursor: pointer; width: 100%; margin-top: 15px;
         }
         .copy-btn { background: transparent; color: #a3e635; border: 2px solid #a3e635; }
-        .copy-btn:hover { background: #a3e635; color: #000; }
-        
         .coffee-btn { background: #fbbf24; color: #000 !important; border: none; margin-bottom: 20px; }
-        .coffee-btn:hover { background: #ffffff; transform: scale(1.02); }
 
-        /* FIXED FOOTER LINKS */
-        footer { 
-            margin-top: 80px; width: 100%; max-width: 1100px; display: flex; justify-content: space-between; 
-            border-top: 1px solid #333; padding: 40px 0; font-size: 12px; position: relative; z-index: 50;
-        }
+        /* MODAL FIX FOR FOOTER 404s */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 100; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        .modal-content { background: #0a0a0a; border: 1px solid #a3e635; padding: 40px; border-radius: 12px; max-width: 600px; width: 100%; position: relative; }
+        .close-modal { position: absolute; top: 20px; right: 20px; color: #a3e635; cursor: pointer; font-weight: 900; }
+
+        footer { margin-top: 80px; width: 100%; max-width: 1100px; display: flex; justify-content: space-between; border-top: 1px solid #333; padding: 40px 0; font-size: 12px; }
         .footer-links { display: flex; gap: 30px; }
-        footer a { color: #FFFFFF; text-decoration: underline; font-weight: 700; text-transform: uppercase; }
-        footer a:hover { color: #fbbf24; }
-        .copyright { color: #888888; font-weight: 600; text-transform: uppercase; }
+        footer button { background: none; border: none; color: #FFFFFF; text-decoration: underline; font-weight: 700; text-transform: uppercase; cursor: pointer; padding: 0; }
+        .copyright { color: #888; font-weight: 600; text-transform: uppercase; }
     </style>
 </head>
 
@@ -157,76 +130,3 @@
                         </button>
                     </div>
                 </div>
-            </div>
-
-            <div class="result-card">
-                <a href="https://buymeacoffee.com/tokenburn" target="_blank" class="btn-action coffee-btn">☕ Buy Me a Coffee</a>
-
-                <label>Estimated Session Burn</label>
-                <div class="total-price" x-text="'$' + calculateTotal()"></div>
-                <p style="font-size: 12px; color: #a3e635; text-transform: uppercase; font-weight: 800; margin-bottom: 20px;" x-text="selectedModel"></p>
-                
-                <div class="support-meta-wrap">
-                    <div class="support-row">
-                        <span class="support-key">Monthly Hosting</span>
-                        <span class="support-val">$14.00</span>
-                    </div>
-                    <div class="support-row">
-                        <span class="support-key">API Maintenance</span>
-                        <span class="support-val">$28.50</span>
-                    </div>
-                    <div class="support-row">
-                        <span class="support-key">Beta Status</span>
-                        <span class="support-val" style="color:#fbbf24;">OPEN ACCESS</span>
-                    </div>
-                </div>
-
-                <button type="button" class="btn-action copy-btn" @click="copyQuote()">Copy Full Quote</button>
-            </div>
-        </div>
-
-        <footer>
-            <div class="footer-links">
-                <a href="https://tokenburn.org/terms">Terms of Use</a>
-                <a href="https://tokenburn.org/privacy">Privacy Policy</a>
-                <a href="mailto:support@tokenburn.org">Contact Support</a>
-            </div>
-            <div class="copyright">&copy; 2026 TOKENBURN.ORG // PRIVATE BETA</div>
-        </footer>
-    </div>
-
-    <script>
-        function burnEngine() {
-            return {
-                inputTokens: 2000,
-                loops: 30,
-                complexity: 'deep',
-                compoundingFactor: 0.20,
-                selectedModel: 'GPT-5.5 Max',
-                modelList: [
-                    { name: 'DeepSeek V4-Flash', per1k: 0.0001 },
-                    { name: 'Llama 4-70B', per1k: 0.00015 },
-                    { name: 'GPT-5.5 Mini', per1k: 0.0025 },
-                    { name: 'GPT-5.5 Max', per1k: 0.0300 }
-                ],
-                applyComplexity(level) {
-                    this.complexity = level;
-                    if (level === 'simple') { this.loops = 5; this.compoundingFactor = 0.10; }
-                    if (level === 'feature') { this.loops = 15; this.compoundingFactor = 0.15; }
-                    if (level === 'deep') { this.loops = 30; this.compoundingFactor = 0.20; }
-                },
-                calculateTotal() {
-                    const model = this.modelList.find(m => m.name === this.selectedModel);
-                    const total = (this.inputTokens * Math.pow(1 + this.compoundingFactor, this.loops)) * (model.per1k / 1000);
-                    return total.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 4});
-                },
-                async copyQuote() {
-                    const report = `TOKENBURN ESTIMATE\nModel: ${this.selectedModel}\nTotal Burn: $${this.calculateTotal()}\nTimestamp: ${new Date().toLocaleString()}`;
-                    await navigator.clipboard.writeText(report);
-                    alert("Quote copied to clipboard.");
-                }
-            }
-        }
-    </script>
-</body>
-</html>
