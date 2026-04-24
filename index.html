@@ -31,7 +31,7 @@
         }
 
         .container { max-width: 1100px; width: 100%; }
-        header { text-align: center; margin-bottom: 50px; margin-top: 20px; }
+        header { text-align: center; margin-bottom: 40px; margin-top: 10px; }
         
         h1 { 
             font-size: clamp(2rem, 8vw, 4rem); 
@@ -46,14 +46,14 @@
         .yellow { color: #fbbf24; }
         .green { color: #a3e635; }
 
-        .main-grid { display: grid; grid-template-columns: 1fr; gap: 30px; }
+        .main-grid { display: grid; grid-template-columns: 1fr; gap: 25px; }
         @media (min-width: 900px) { .main-grid { grid-template-columns: 2fr 1.2fr; } }
 
-        /* Tightened Bounding Box */
+        /* Ultra-Slim Bounding Box */
         .card { 
             background: #0f0f0f; 
             border: 1px solid #1a2e1a; 
-            padding: 20px 25px 10px 25px; 
+            padding: 18px 22px 5px 22px; 
             border-radius: 8px; 
             box-sizing: border-box; 
         }
@@ -64,7 +64,8 @@
             text-align: center; 
             box-shadow: 0 0 30px rgba(163, 230, 53, 0.15); 
             position: sticky; 
-            top: 20px; 
+            top: 20px;
+            padding-bottom: 20px;
         }
 
         label { 
@@ -73,18 +74,18 @@
             font-weight: 700; 
             color: #a3e635; 
             text-transform: uppercase; 
-            margin-bottom: 8px; 
+            margin-bottom: 6px; 
             letter-spacing: 0.08em; 
         }
 
-        /* Compact Dropdown with Alternating Colors */
+        /* Dropdown with Alternating Yellow/White text */
         select { 
             width: 100%; 
             background: #111111; 
             color: #fbbf24; 
             border: 1px solid #1a2e1a; 
-            padding: 12px; 
-            border-radius: 8px; 
+            padding: 10px; 
+            border-radius: 6px; 
             font-size: 13px; 
             font-weight: 500; 
             appearance: none; 
@@ -92,34 +93,35 @@
             background-repeat: no-repeat; 
             background-position: right 1rem center; 
             background-size: 1em; 
-            margin-bottom: 20px; 
+            margin-bottom: 18px; 
             cursor: pointer; 
         }
 
-        select option { background: #141414; color: #fbbf24; padding: 10px; }
-        select option:nth-child(even) { background-color: #1a1a1a !important; }
+        /* Alternating text colors for options */
+        select option { background: #141414; color: #fbbf24; }
+        select option:nth-child(even) { color: #ffffff !important; }
 
         /* Tightened Sliders */
         input[type="range"] { 
             width: 100%; 
-            height: 8px; 
+            height: 6px; 
             background: #1a1a1a; 
             border-radius: 8px; 
             outline: none; 
-            margin: 10px 0 20px 0; 
+            margin: 8px 0 18px 0; 
             accent-color: #fbbf24; 
             cursor: pointer; 
         }
 
         .val-display { display: flex; justify-content: space-between; align-items: baseline; }
-        .big-num { color: #fbbf24; font-size: 18px; font-weight: 700; font-variant-numeric: tabular-nums; }
+        .big-num { color: #fbbf24; font-size: 17px; font-weight: 700; font-variant-numeric: tabular-nums; }
 
         /* Complexity Section Spacing */
         .cx-prompt { 
             color: #a3e635; 
-            font-size: 10px; 
+            font-size: 9px; 
             font-weight: 500; 
-            margin: 20px 0 15px 0; 
+            margin: 15px 0 10px 0; 
             text-transform: uppercase; 
             letter-spacing: 0.05em; 
         }
@@ -128,51 +130,50 @@
             display: grid; 
             grid-template-columns: repeat(3, 1fr); 
             gap: 8px; 
-            margin: 0 0 25px 0; 
+            margin: 0 0 15px 0; 
         }
 
         .complexity-btn { 
             background: transparent; 
             color: #a3e635; 
             border: 1px solid rgba(163, 230, 53, 0.3); 
-            padding: 8px 12px; 
-            border-radius: 8px; 
+            padding: 6px 10px; 
+            border-radius: 6px; 
             cursor: pointer; 
             text-align: left; 
             transition: all 0.12s ease; 
-            line-height: 1.2; 
+            line-height: 1.1; 
         }
 
-        .complexity-btn:hover { border-color: #a3e635; box-shadow: 0 0 12px rgba(163, 230, 53, 0.2); }
+        .complexity-btn:hover { border-color: #a3e635; }
         .complexity-btn.active { background: #a3e635; color: #000000; border-color: #a3e635; }
-        .complexity-btn .cx-label { display: block; font-size: 13px; font-weight: 600; color: inherit; text-transform: uppercase; }
-        .complexity-btn .cx-meta { display: block; font-size: 10px; font-weight: 500; color: #9ca3af; margin-top: 4px; text-transform: uppercase; }
+        .complexity-btn .cx-label { display: block; font-size: 12px; font-weight: 600; color: inherit; text-transform: uppercase; }
+        .complexity-btn .cx-meta { display: block; font-size: 9px; font-weight: 500; color: #9ca3af; margin-top: 2px; text-transform: uppercase; }
         .complexity-btn.active .cx-label, .complexity-btn.active .cx-meta { color: #000000; }
 
-        .total-price { font-size: 44px; font-weight: 700; margin: 10px 0; letter-spacing: -1.5px; color: #FFFFFF; text-align: center; line-height: 1.1; font-variant-numeric: tabular-nums; }
-        .sub-label { font-size: 10px; font-weight: 700; color: #a3e635; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
-        .model-label { font-size: 10px; font-weight: 600; color: #9ca3af; text-transform: uppercase; margin-top: 6px; }
+        .total-price { font-size: 40px; font-weight: 700; margin: 5px 0; letter-spacing: -1.5px; color: #FFFFFF; text-align: center; line-height: 1.1; font-variant-numeric: tabular-nums; }
+        .sub-label { font-size: 10px; font-weight: 700; color: #a3e635; text-transform: uppercase; letter-spacing: 0.08em; margin: 15px 0 5px 0; }
+        .model-label { font-size: 10px; font-weight: 600; color: #9ca3af; text-transform: uppercase; margin-top: 4px; }
 
         .copy-btn { 
             display: inline-block; 
-            margin: 16px 0 4px 0; 
+            margin: 12px 0 0 0; 
             background: transparent; 
             color: #a3e635; 
             border: 1px solid rgba(163, 230, 53, 0.4); 
-            padding: 10px 20px; 
-            border-radius: 8px; 
-            font-size: 10px; 
+            padding: 8px 16px; 
+            border-radius: 6px; 
+            font-size: 9px; 
             font-weight: 700; 
             text-transform: uppercase; 
             cursor: pointer; 
-            transition: all 0.15s ease; 
         }
         .copy-btn:hover, .copy-btn.copied { background: #a3e635; color: #000000; border-color: #a3e635; }
 
-        .status-card { background: #0f0f0f; border: 1px solid #1a2e1a; padding: 20px; border-radius: 8px; color: #a3e635; }
-        .status-header { font-size: 10px; font-weight: 700; text-transform: uppercase; margin-bottom: 12px; }
-        .status-bar { font-size: 13px; font-weight: 600; margin-bottom: 14px; font-variant-numeric: tabular-nums; }
-        .status-note { font-size: 13px; font-weight: 400; color: #9ca3af; margin-bottom: 16px; }
+        .status-card { background: #0f0f0f; border: 1px solid #1a2e1a; padding: 15px; border-radius: 8px; color: #a3e635; }
+        .status-header { font-size: 9px; font-weight: 700; text-transform: uppercase; margin-bottom: 10px; }
+        .status-bar { font-size: 12px; font-weight: 600; margin-bottom: 10px; font-variant-numeric: tabular-nums; }
+        .status-note { font-size: 12px; font-weight: 400; color: #9ca3af; margin-bottom: 12px; }
 
         .support-btn { 
             display: block; 
@@ -180,9 +181,9 @@
             background: transparent; 
             color: #a3e635; 
             border: 1px solid rgba(163, 230, 53, 0.3); 
-            padding: 12px; 
-            border-radius: 8px; 
-            font-size: 10px; 
+            padding: 10px; 
+            border-radius: 6px; 
+            font-size: 9px; 
             font-weight: 700; 
             text-transform: uppercase; 
             text-decoration: none; 
@@ -193,9 +194,9 @@
 
         #ad-container { 
             width: 100%; 
-            min-height: 250px; 
+            min-height: 200px; 
             background: #080808; 
-            margin-top: 15px; 
+            margin-top: 10px; 
             border-radius: 8px; 
             border: 1px solid #111; 
             display: flex; 
@@ -203,18 +204,17 @@
             justify-content: center; 
         }
 
-        footer { margin-top: 80px; text-align: center; border-top: 1px solid #111; padding: 40px 0; }
+        footer { margin-top: 60px; text-align: center; border-top: 1px solid #111; padding: 30px 0; }
         .footer-links a { color: #e5e7eb; text-decoration: none; margin: 0 15px; font-size: 10px; font-weight: 600; text-transform: uppercase; }
         .footer-links a:hover { color: #a3e635; }
-        .footer-copy { color: #e5e7eb; font-size: 10px; margin-top: 30px; opacity: 0.6; }
+        .footer-copy { color: #e5e7eb; font-size: 10px; margin-top: 20px; opacity: 0.6; }
 
         .modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 20px; backdrop-filter: blur(3px); }
-        .dialog { width: 100%; max-width: 520px; background: #000; border: 2px solid #a3e635; border-radius: 8px; box-shadow: 0 0 40px rgba(163, 230, 53, 0.35); color: #a3e635; overflow: hidden; }
-        .dialog-titlebar { display: flex; align-items: center; justify-content: space-between; background: #a3e635; color: #000; padding: 8px 14px; font-size: 10px; font-weight: 700; text-transform: uppercase; }
-        .dialog-close { background: #000; color: #a3e635; border: 1px solid #000; width: 24px; height: 22px; cursor: pointer; border-radius: 4px; }
-        .dialog-body { padding: 24px 22px; font-size: 13px; line-height: 1.7; color: #e5e7eb; }
-        .dialog-body .prompt { color: #fbbf24; font-weight: 600; }
-        .dialog-footer { border-top: 1px solid #1a2e1a; padding: 10px 20px; font-size: 10px; text-transform: uppercase; color: #a3e635; opacity: 0.7; display: flex; justify-content: space-between; }
+        .dialog { width: 100%; max-width: 520px; background: #000; border: 2px solid #a3e635; border-radius: 8px; color: #a3e635; overflow: hidden; }
+        .dialog-titlebar { display: flex; align-items: center; justify-content: space-between; background: #a3e635; color: #000; padding: 6px 12px; font-size: 10px; font-weight: 700; text-transform: uppercase; }
+        .dialog-close { background: #000; color: #a3e635; border: 1px solid #000; width: 22px; height: 20px; cursor: pointer; border-radius: 4px; }
+        .dialog-body { padding: 20px; font-size: 13px; line-height: 1.7; color: #e5e7eb; }
+        .dialog-footer { border-top: 1px solid #1a2e1a; padding: 8px 15px; font-size: 9px; text-transform: uppercase; color: #a3e635; opacity: 0.7; display: flex; justify-content: space-between; }
     </style>
 </head>
 
@@ -264,7 +264,7 @@
                 </div>
             </div>
 
-            <div style="display: flex; flex-direction: column; gap: 20px;">
+            <div style="display: flex; flex-direction: column; gap: 15px;">
                 <div class="card result-card">
                     <p class="sub-label">Estimated Session Cost</p>
                     <span class="total-price"><span class="currency">$</span><span x-text="calculateTotal()"></span></span>
@@ -275,8 +275,8 @@
                 <div class="status-card">
                     <div class="status-header">// System Status</div>
                     <div class="status-bar" x-text="'[' + '|'.repeat(6) + '-'.repeat(4) + '] 60% to hosting goal'"></div>
-                    <p class="status-note">Community-supported. No trackers, no paywalls.</p>
-                    <a class="support-btn" href="https://www.buymeacoffee.com/tokenburn" target="_blank" rel="noopener noreferrer">[ Support Node: $9/mo Goal ]</a>
+                    <p class="status-note">No trackers, no paywalls.</p>
+                    <a class="support-btn" href="https://www.buymeacoffee.com/tokenburn" target="_blank" rel="noopener noreferrer">[ Support Node ]</a>
                 </div>
 
                 <div id="ad-container">
@@ -298,40 +298,18 @@
                     <a href="/terms.html">Terms</a>
                     <a href="#" @click.prevent="showContact = true">Contact</a>
                 </div>
-                <p class="footer-copy">TOKENBURN.ORG DATA REPOSITORY &copy; 2026</p>
+                <p class="footer-copy">TOKENBURN.ORG &copy; 2026</p>
             </footer>
 
             <div class="modal-overlay" x-show="showPrivacy" x-cloak @click.self="showPrivacy = false" @keydown.escape.window="showPrivacy = false">
                 <div class="dialog">
                     <div class="dialog-titlebar">
-                        <span>Privacy Policy</span>
+                        <span>Privacy</span>
                         <button class="dialog-close" @click="showPrivacy = false">X</button>
                     </div>
                     <div class="dialog-body">
-                        <p><span class="prompt">&gt;</span> No data is stored.</p>
-                        <p><span class="prompt">&gt;</span> All calculations happen locally.</p>
-                        <p><span class="prompt">&gt;</span> No cookies or tracking.</p>
-                    </div>
-                    <div class="dialog-footer">
-                        <span>Status: OK</span>
-                        <span>[ESC] Close</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="modal-overlay" x-show="showContact" x-cloak @click.self="showContact = false" @keydown.escape.window="showContact = false">
-                <div class="dialog">
-                    <div class="dialog-titlebar">
-                        <span>Contact</span>
-                        <button class="dialog-close" @click="showContact = false">X</button>
-                    </div>
-                    <div class="dialog-body">
-                        <p><span class="prompt">&gt;</span> Email: <a href="mailto:admin@tokenburn.org">admin@tokenburn.org</a></p>
-                        <p><span class="prompt">&gt;</span> Response: &lt; 48 hours</p>
-                    </div>
-                    <div class="dialog-footer">
-                        <span>Status: Online</span>
-                        <span>[ESC] Close</span>
+                        <p>&gt; All calculations happen locally.</p>
+                        <p>&gt; No cookies or tracking.</p>
                     </div>
                 </div>
             </div>
@@ -371,15 +349,7 @@
                     return total.toFixed(4);
                 },
                 copyResult() {
-                    const report = `TOKENBURN INFRASTRUCTURE REPORT\n` +
-                                 `-------------------------------\n` +
-                                 `Model:      ${this.selectedModel}\n` +
-                                 `Context:    ${parseInt(this.inputTokens).toLocaleString()} tokens\n` +
-                                 `Recursive:  ${this.loops} loops\n` +
-                                 `Total Burn: $${this.calculateTotal()}\n` +
-                                 `-------------------------------\n` +
-                                 `Generated at tokenburn.org`;
-                    
+                    const report = `TOKENBURN INFRASTRUCTURE REPORT\nModel: ${this.selectedModel}\nTotal Burn: $${this.calculateTotal()}`;
                     navigator.clipboard.writeText(report).then(() => {
                         this.copied = true;
                         setTimeout(() => this.copied = false, 2000);
