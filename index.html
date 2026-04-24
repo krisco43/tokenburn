@@ -39,7 +39,6 @@
         .main-grid { display: grid; grid-template-columns: 1fr; gap: 30px; align-items: start; }
         @media (min-width: 900px) { .main-grid { grid-template-columns: 1.8fr 1.2fr; } }
 
-        /* THE BOUNDING BOX: Tight frame, no excess vertical waste */
         .card { 
             background: #0f0f0f; 
             border: 1px solid #1a2e1a; 
@@ -58,9 +57,8 @@
             box-shadow: 0 0 30px rgba(163, 230, 53, 0.1);
         }
 
-        /* Grouping with consistent breathing room */
         .input-group { margin-bottom: 30px; }
-        .input-group:last-child { margin-bottom: 0; } /* Snaps the bounding box bottom */
+        .input-group:last-child { margin-bottom: 0; }
 
         label { 
             display: block; 
@@ -72,7 +70,6 @@
             letter-spacing: 0.1em; 
         }
 
-        /* DROPDOWN: Alternating Colors */
         select { 
             width: 100%; 
             background: #111111; 
@@ -107,7 +104,6 @@
         .val-display { display: flex; justify-content: space-between; align-items: baseline; }
         .big-num { color: #fbbf24; font-size: 24px; font-weight: 700; }
 
-        /* BUTTONS: Large and Tactile */
         .complexity-toggle { 
             display: grid; 
             grid-template-columns: repeat(3, 1fr); 
@@ -142,7 +138,39 @@
             cursor: pointer; 
             width: 100%;
         }
-        .copy-btn:hover { background: #a3e635; color: #000; }
+
+        /* SUPPORT DATA PANEL */
+        .support-panel {
+            margin-top: 40px;
+            padding: 20px;
+            border: 1px dashed #1a1a1a;
+            border-radius: 8px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            background: rgba(15, 15, 15, 0.5);
+        }
+
+        .support-item { display: flex; flex-direction: column; gap: 4px; }
+        .support-label { font-size: 10px; color: #444; text-transform: uppercase; font-weight: 800; }
+        .support-value { font-size: 12px; color: #888; font-family: monospace; }
+        .status-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #a3e635; margin-right: 6px; }
+
+        footer { 
+            margin-top: 30px; 
+            width: 100%; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            border-top: 1px solid #1a1a1a;
+            padding-top: 25px;
+            color: #333;
+            font-size: 11px;
+        }
+
+        .footer-left { display: flex; gap: 24px; }
+        footer a { color: #666; text-decoration: none; text-transform: uppercase; font-weight: 700; }
+        footer a:hover { color: #fbbf24; }
     </style>
 </head>
 
@@ -198,13 +226,39 @@
                 </div>
             </div>
 
-            <div class="result-card">
+            <div class="card result-card">
                 <label>Estimated Session Burn</label>
                 <div class="total-price" x-text="'$' + calculateTotal()"></div>
                 <p style="font-size: 12px; color: #9ca3af; text-transform: uppercase;" x-text="selectedModel"></p>
                 <button type="button" class="copy-btn" @click="copyResult()">Copy Quote Report</button>
             </div>
         </div>
+
+        <div class="support-panel">
+            <div class="support-item">
+                <span class="support-label">Netlify Site ID</span>
+                <span class="support-value">tb-prod-882-xf92</span>
+            </div>
+            <div class="support-item">
+                <span class="support-label">Support Status</span>
+                <span class="support-value"><span class="status-dot"></span>Active Premium</span>
+            </div>
+            <div class="support-item">
+                <span class="support-label">Last Build</span>
+                <span class="support-value">2026-04-24 23:45 UTC</span>
+            </div>
+        </div>
+
+        <footer>
+            <div class="footer-left">
+                <a href="#">Terms of Use</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Contact Support</a>
+            </div>
+            <div class="footer-right">
+                &copy; 2026 TOKENBURN.ORG // PRIVATE BETA
+            </div>
+        </footer>
     </div>
 
     <script>
