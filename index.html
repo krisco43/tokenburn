@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TokenBurn | AI Agent Cost Estimator</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <link rel="preconnect" href="https://rsms.me/">
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9081312085791516" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <style>
+        [x-cloak] { display: none !important; }
+        * { font-family: -apple-system, "Inter", sans-serif !important; }
+        body { font-weight: 400; font-size: 13px; background-color: #050505; color: #ffffff; margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
+        .container { max-width: 1100px; width: 100%; }
+        header { text-align: center; margin-bottom: 50px; margin-top: 20px; }
+        h1 { font-size: clamp(2rem, 8vw, 4rem); margin: 0; font-weight: 700; letter-spacing: -3px; text-transform: uppercase; line-height: 0.9; color: #FFFFFF; }
+        .yellow { color: #fbbf24; }
+        .green { color: #a3e635; }
+        .main-grid { display: grid; grid-template-columns: 1fr; gap: 30px; }
+        @media (min-width: 900px) { .main-grid { grid-template-columns: 2fr 1.2fr; } }
+        .card { background: #0f0f0f; border: 1px solid #1a2e1a; padding: 30px; border-radius: 8px; box-sizing: border-box; }
+        .result-card { background: #000; border: 2px solid #a3e635; text-align: center; box-shadow: 0 0 30px rgba(163, 230, 53, 0.15); position: sticky; top: 20px; }
+        label { display: block; font-size: 10px; font-weight: 700; color: #a3e635; text-transform: uppercase; margin-bottom: 12px; letter-spacing: 0.08em; }
+        select { width: 100%; background: #111111; color: #fbbf24; border: 1px solid #1a2e1a; padding: 15px; border-radius: 8px; font-size: 13px; font-weight: 500; appearance: none; background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fbbf24' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e"); background-repeat: no-repeat; background-position: right 1rem center; background-size: 1em; margin-bottom: 25px; cursor: pointer; }
+        select option { background: #111111; color: #fbbf24; }
+        input[type="range"] { width: 100%; height: 8px; background: #1a1a1a; border-radius: 8px; outline: none; margin: 15px 0 35px 0; accent-color: #fbbf24; cursor: pointer; }
+        .val-display { display: flex; justify-content: space-between; align-items: baseline; }
+        .big-num { color: #fbbf24; font-size: 18px; font-weight: 700; font-variant-numeric: tabular-nums; }
+        .complexity-toggle { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 0 0 25px 0; }
+        .complexity-btn { background: transparent; color: #a3e635; border: 1px solid rgba(163, 230, 53, 0.3); padding: 14px 12px; border-radius: 8px; cursor: pointer; text-align: left; transition: all 0.12s ease; line-height: 1.4; }
+        .complexity-btn:hover { border-color: #a3e635; box-shadow: 0 0 12px rgba(163, 230, 53, 0.2); }
+        .complexity-btn .cx-label { display: block; font-size: 13px; font-weight: 600; color: inherit; text-transform: uppercase; letter-spacing: 0.02em; }
+        .complexity-btn .cx-meta { display: block; font-size: 10px; font-weight: 500; color: #9ca3af; margin-top: 6px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .complexity-btn.active { background: #a3e635; color: #000000; border-color: #a3e635; }
+        .complexity-btn.active .cx-label { color: #000000; }
+        .complexity-btn.active .cx-meta { color: #000000; opacity: 0.75; }
+        .cx-prompt { color: #a3e635; font-size: 10px; font-weight: 500; margin: -5px 0 10px 0; text-transform: uppercase; letter-spacing: 0.05em; }
+        .total-price { font-size: 44px; font-weight: 700; margin: 10px 0; display: block; letter-spacing: -1.5px; color: #FFFFFF; text-align: center; line-height: 1.1; font-variant-numeric: tabular-nums; }
+        .total-price .currency { color: #FFFFFF; font-weight: 700; letter-spacing: 0; }
+        .sub-label { font-size: 10px; font-weight: 700; color: #a3e635; text-transform: uppercase; letter-spacing: 0.08em; margin: 0 0 8px 0; }
+        .model-label { font-size: 10px; font-weight: 600; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.05em; margin: 6px 0 0 0; }
+        .copy-btn { display: inline-block; margin: 16px 0 4px 0; background: transparent; color: #a3e635; border: 1px solid rgba(163, 230, 53, 0.4); padding: 10px 20px; border-radius: 8px; font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; transition: all 0.15s ease; }
+        .copy-btn:hover { background: #a3e635; color: #000000; border-color: #a3e635; }
+        .copy-btn.copied { background: #a3e635; color: #000000; border-color: #a3e635; }
+        .status-card { background: #0f0f0f; border: 1px solid #1a2e1a; padding: 20px; border-radius: 8px; color: #a3e635; }
+        .status-card .status-header { font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 12px; color: #a3e635; }
+        .status-card .status-bar { font-size: 13px; font-weight: 600; letter-spacing: 1px; margin-bottom: 14px; white-space: nowrap; overflow: hidden; color: #a3e635; font-variant-numeric: tabular-nums; }
+        .status-card .status-note { font-size: 13px; font-weight: 400; color: #9ca3af; margin: 0 0 16px 0; }
+        .support-btn { display: block; width: 100%; background: transparent; color: #a3e635; border: 1px solid rgba(163, 230, 53, 0.3); padding: 12px; border-radius: 8px; font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; text-align: center; cursor: pointer; transition: all 0.15s ease; box-sizing: border-box; }
+        .support-btn:hover { background: #a3e635; color: #000000; border-color: #a3e635; }
+        #ad-container { width: 100%; min-height: 250px; background: #080808; margin-top: 15px; border-radius: 8px; border: 1px solid #111; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        footer { margin-top: 80px; text-align: center; border-top: 1px solid #111; padding: 40px 0; width: 100%; }
+        .footer-links a { color: #e5e7eb; text-decoration: none; margin: 0 15px; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; cursor: pointer; }
+        .footer-links a:hover { color: #a3e635; }
+        .footer-copy { color: #e5e7eb; font-size: 10px; font-weight: 500; margin-top: 30px; letter-spacing: 0.05em; }
+
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 20px; backdrop-filter: blur(3px); }
+        .dialog { width: 100%; max-width: 520px; background: #000; border: 2px solid #a3e635; border-radius: 8px; box-shadow: 0 0 40px rgba(163, 230, 53, 0.35); color: #a3e635; overflow: hidden; }
+        .dialog-titlebar { display: flex; align-items: center; justify-content: space-between; background: #a3e635; color: #000; padding: 8px 14px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; }
+        .dialog-close { background: #000; color: #a3e635; border: 1px solid #000; width: 24px; height: 22px; font-weight: 700; font-size: 12px; line-height: 1; cursor: pointer; display: flex; align-items: center; justify-content: center; border-radius: 4px; }
+        .dialog-close:hover { background: #a3e635; color: #000; }
+        .dialog-body { padding: 24px 22px; font-size: 13px; font-weight: 400; line-height: 1.7; color: #e5e7eb; }
+        .dialog-body p { margin: 0 0 10px 0; }
+        .dialog-body .prompt { color: #fbbf24; font-weight: 600; }
+        .dialog-body a { color: #a3e635; text-decoration: underline; }
+        .dialog-body a:hover { color: #fbbf24; }
+        .dialog-footer { border-top: 1px solid #1a2e1a; padding: 10px 20px; font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #a3e635; opacity: 0.7; display: flex; justify-content: space-between; }
+    </style>
+</head>
+<body x-data="burnEngine()">
+    <div class="container">
+        <header>
+            <h1>TOKEN<span class="yellow">BURN</span><span class="green">.ORG</span></h1>
+            <p style="color: #a3e635; font-size: 10px; font-weight: 700; letter-spacing: 0.08em; margin-top: 12px; text-transform: uppercase;">MULTI-MODEL TERMINAL v2.0 // APRIL 2026</p>
+        </header>
+
+        <div class="main-grid">
+            <div class="card">
+                <label>Select Intelligence Engine</label>
+                <select x-model="selectedModel">
+                    <template x-for="m in modelList" :key="m.name">
+                        <option :value="m.name" x-text="m.name + ' — $' + m.per1k.toFixed(4) + ' / 1k tokens'"></option>
+                    </template>
+                </select>
+
+                <div class="val-display">
+                    <label>Initial Prompt Context</label>
+                    <span class="big-num" x-text="parseInt(inputTokens).toLocaleString()"></span>
+                </div>
+                <input type="range" min="1000" max="1000000" step="1000" x-model="inputTokens">
+
+                <div class="val-display">
+                    <label>Recursive Agent Loops</label>
+                    <span class="big-num" x-text="loops"></span>
+                </div>
+                <input type="range" min="1" max="50" step="1" x-model="loops">
+
+                <label>Complexity Profile</label>
+                <p class="cx-prompt">&gt; SELECT TASK ARCHETYPE // COMPOUNDING FACTOR: <span x-text="(compoundingFactor * 100).toFixed(0) + '%'"></span></p>
+                <div class="complexity-toggle" role="group" aria-label="Complexity presets">
+                    <button type="button" class="complexity-btn" :class="{ active: complexity === 'simple' }" @click="applyComplexity('simple')">
+                        <span class="cx-label">[01] Simple</span>
+                        <span class="cx-meta">5 loops // 10%</span>
+                    </button>
+                    <button type="button" class="complexity-btn" :class="{ active: complexity === 'feature' }" @click="applyComplexity('feature')">
+                        <span class="cx-label">[02] Feature</span>
+                        <span class="cx-meta">15 loops // 15%</span>
+                    </button>
+                    <button type="button" class="complexity-btn" :class="{ active: complexity === 'refactor' }" @click="applyComplexity('refactor')">
+                        <span class="cx-label">[03] Deep</span>
+                        <span class="cx-meta">30 loops // 20%</span>
+                    </button>
+                </div>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 20px;">
+                <div class="card result-card">
+                    <p class="sub-label">Estimated Session Cost</p>
+                    <span class="total-price"><span class="currency">$</span><span x-text="calculateTotal()"></span></span>
+                    <p class="model-label" x-text="selectedModel"></p>
+                    <button type="button" class="copy-btn" :class="{ copied: copied }" @click="copyResult()" x-text="copied ? 'Copied!' : 'Copy Quote'"></button>
+                </div>
+
+                <div class="status-card">
+                    <div class="status-header">// System Status</div>
+                    <div class="status-bar" x-text="'[' + '|'.repeat(6) + '-'.repeat(4) + '] 60% to hosting goal'"></div>
+                    <p class="status-note">Community-supported. No trackers, no paywalls.</p>
+                    <a class="support-btn" href="https://www.buymeacoffee.com/tokenburn" target="_blank" rel="noopener noreferrer">[ Support Node: $9/mo Goal ]</a>
+                </div>
+
+                <div id="ad-container">
+                    <ins class="adsbygoogle"
+                         style="display:block"
+                         data-ad-client="ca-pub-9081312085791516"
+                         data-ad-slot="AUTO"
+                         data-ad-format="auto"
+                         data-full-width-responsive="true"></ins>
+                    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+                </div>
+            </div>
+        </div>
+
+        <div x-data="{ showPrivacy: false, showContact: false }">
+            <footer>
+                <div class="footer-links">
+                    <a href="#" @click.prevent="showPrivacy = true">Privacy</a>
+                    <a href="/terms.html">Terms</a>
+                    <a href="#" @click.prevent="showContact = true">Contact</a>
+                </div>
+                <p class="footer-copy">TOKENBURN.ORG DATA REPOSITORY &copy; 2026</p>
+            </footer>
+
+            <div class="modal-overlay" x-show="showPrivacy" x-cloak @click.self="showPrivacy = false" @keydown.escape.window="showPrivacy = false">
+                <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="privacy-title">
+                    <div class="dialog-titlebar">
+                        <span class="title-text" id="privacy-title">Privacy Policy</span>
+                        <button class="dialog-close" @click="showPrivacy = false" aria-label="Close">X</button>
+                    </div>
+                    <div class="dialog-body">
+                        <p><span class="prompt">&gt;</span> No data is stored.</p>
+                        <p><span class="prompt">&gt;</span> All calculations happen locally in the browser.</p>
+                        <p><span class="prompt">&gt;</span> No cookies.</p>
+                        <p><span class="prompt">&gt;</span> No tracking.</p>
+                    </div>
+                    <div class="dialog-footer">
+                        <span>Status: OK</span>
+                        <span>[ESC] Close</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-overlay" x-show="showContact" x-cloak @click.self="showContact = false" @keydown.escape.window="showContact = false">
+                <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="contact-title">
+                    <div class="dialog-titlebar">
+                        <span class="title-text" id="contact-title">Contact</span>
+                        <button class="dialog-close" @click="showContact = false" aria-label="Close">X</button>
+                    </div>
+                    <div class="dialog-body">
+                        <p><span class="prompt">&gt;</span> Email: <a href="mailto:admin@tokenburn.org">admin@tokenburn.org</a></p>
+                        <p><span class="prompt">&gt;</span> Support: <a href="https://www.buymeacoffee.com/tokenburn" target="_blank" rel="noopener noreferrer">buymeacoffee.com/tokenburn</a></p>
+                        <p><span class="prompt">&gt;</span> Response: usually &lt; 48 hours</p>
+                    </div>
+                    <div class="dialog-footer">
+                        <span>Status: Online</span>
+                        <span>[ESC] Close</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function burnEngine() {
+            return {
+                inputTokens: 2000,
+                loops: 5,
+                complexity: 'simple',
+                compoundingFactor: 0.10,
+                selectedModel: 'DeepSeek V4-Flash',
+                copied: false,
+                modelList: [
+                    { name: 'DeepSeek V4-Flash',  per1k: 0.0001 },
+                    { name: 'Llama 4-70B',        per1k: 0.00015 },
+                    { name: 'DeepSeek V4-Pro',    per1k: 0.0017 },
+                    { name: 'GPT-5.5 Mini',       per1k: 0.0025 },
+                    { name: 'Claude 4.7 Sonnet',  per1k: 0.0030 },
+                    { name: 'OpenAI o4-mini',     per1k: 0.0110 },
+                    { name: 'Gemini 2.0 Ultra',   per1k: 0.0125 },
+                    { name: 'OpenAI o4-preview',  per1k: 0.0150 },
+                    { name: 'Claude 4.7 Opus',    per1k: 0.0250 },
+                    { name: 'GPT-5.5 Max',        per1k: 0.0300 }
+                ],
+                lastUpdated: '2026-04-24',
+                getModel() {
+                    return this.modelList.find(m => m.name === this.selectedModel);
+                },
+                applyComplexity(level) {
+                    this.complexity = level;
+                    if (level === 'simple')   { this.loops = 5;  this.compoundingFactor = 0.10; }
+                    if (level === 'feature')  { this.loops = 15; this.compoundingFactor = 0.15; }
+                    if (level === 'refactor') { this.loops = 30; this.compoundingFactor = 0.20; }
+                },
+                calculateTotal() {
+                    const model = this.getModel();
+                    if (!model) return '0.0000';
+                    const context = parseInt(this.inputTokens);
+                    const loops = parseInt(this.loops);
+                    const cf = this.compoundingFactor;
+                    const totalCost = (context * Math.pow(1 + cf, loops)) * (model.per1k / 1000);
+                    return totalCost.toFixed(4);
+                },
+                copyResult() {
+                    const text = '$' + this.calculateTotal() + ' — ' + this.selectedModel + ' (via TokenBurn.org)';
+                    const done = () => {
+                        this.copied = true;
+                        setTimeout(() => { this.copied = false; }, 2000);
+                    };
+                    if (navigator.clipboard && navigator.clipboard.writeText) {
+                        navigator.clipboard.writeText(text).then(done).catch(() => {
+                            this.fallbackCopy(text); done();
+                        });
+                    } else {
+                        this.fallbackCopy(text); done();
+                    }
+                },
+                fallbackCopy(text) {
+                    const ta = document.createElement('textarea');
+                    ta.value = text;
+                    ta.style.position = 'fixed';
+                    ta.style.opacity = '0';
+                    document.body.appendChild(ta);
+                    ta.select();
+                    try { document.execCommand('copy'); } catch (e) {}
+                    document.body.removeChild(ta);
+                }
+            }
+        }
+    </script>
+</body>
+</html>
