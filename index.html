@@ -6,7 +6,6 @@
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-
       gtag('config', 'G-ZRXDSY5VND');
     </script>
     <meta charset="UTF-8">
@@ -28,16 +27,17 @@
         
         .card { background: #0a0a0a; border: 1px solid #1a2e1a; padding: 30px; border-radius: 12px; }
         
-        .result-card { background: #000; border: 2px solid #a3e635; padding: 35px 25px; border-radius: 12px; display: flex; flex-direction: column; text-align: center; transition: all 0.5s ease; }
+        .result-card { background: #000; border: 2px solid #a3e635; padding: 35px 25px; border-radius: 12px; display: flex; flex-direction: column; text-align: center; transition: all 0.4s ease; }
         
-        /* THE RED ZONE FEATURE */
-        .red-zone { border-color: #ef4444 !important; background: radial-gradient(circle, #220000 0%, #000 100%); animation: redPulse 3s infinite; }
-        .red-zone .total-price { color: #ef4444; }
-        .red-zone .model-badge { color: #ef4444; }
+        /* UPDATED RED ZONE */
+        .red-zone { border-color: #ef4444 !important; background: #1a0505 !important; animation: redPulse 2s infinite ease-in-out; }
+        .red-zone .total-price { color: #ef4444 !important; }
+        .red-zone .model-badge { color: #ef4444 !important; }
+        .red-zone label { color: #ef4444 !important; }
 
         @keyframes redPulse {
             0% { box-shadow: 0 0 0px rgba(239, 68, 68, 0); }
-            50% { box-shadow: 0 0 25px rgba(239, 68, 68, 0.2); }
+            50% { box-shadow: 0 0 30px rgba(239, 68, 68, 0.4); background: #2a0808 !important; }
             100% { box-shadow: 0 0 0px rgba(239, 68, 68, 0); }
         }
 
@@ -65,114 +65,4 @@
 
         footer { margin-top: 80px; display: flex; justify-content: space-between; border-top: 1px solid #333; padding: 40px 0; font-size: 12px; width: 100%; }
         .footer-links { display: flex; gap: 25px; }
-        footer button { background: none; border: none; color: #fff; text-decoration: underline; cursor: pointer; font-weight: 700; text-transform: uppercase; padding: 0; }
-    </style>
-</head>
-<body x-data="burnEngine()">
-    <div class="container">
-        <header><h1>TOKEN<span class="yellow">BURN</span><span class="green">.ORG</span></h1></header>
-        
-        <div class="main-grid">
-            <div class="card">
-                <div class="input-group">
-                    <label>Intelligence Engine</label>
-                    <select x-model="selectedModel" @change="updateModelName($event)">
-                        <option value="0.0001">DeepSeek V4-Flash — $0.0001</option>
-                        <option value="0.00015">Llama 4-70B — $0.00015</option>
-                        <option value="0.0005">Grok-3 Mini — $0.0005</option>
-                        <option value="0.0008">Claude 4.2 Haiku — $0.0008</option>
-                        <option value="0.0025">GPT-5.5 Mini — $0.0025</option>
-                        <option value="0.0035">DeepSeek V4-Pro — $0.0035</option>
-                        <option value="0.0060">Claude 4.7 Sonnet — $0.0060</option>
-                        <option value="0.0125">Gemini 2.5 Ultra — $0.0125</option>
-                        <option value="0.0150">Claude 4.8 Opus — $0.0150</option>
-                        <option value="0.0300">GPT-5.5 Max — $0.0300</option>
-                    </select>
-                </div>
-                
-                <div class="input-group">
-                    <div style="display: flex; justify-content: space-between;"><label>Prompt Context</label><span class="big-num" x-text="parseInt(inputTokens).toLocaleString()"></span></div>
-                    <input type="range" min="1000" max="1000000" step="1000" x-model="inputTokens">
-                </div>
-                
-                <div class="input-group">
-                    <div style="display: flex; justify-content: space-between;"><label>Agent Loops</label><span class="big-num" x-text="loops"></span></div>
-                    <input type="range" min="1" max="50" x-model="loops">
-                </div>
-                
-                <div class="comp-grid">
-                    <button class="comp-btn" :class="{active: complexity==='simple'}" @click="setComp('simple', 5, 0.1)">SIMPLE</button>
-                    <button class="comp-btn" :class="{active: complexity==='feat'}" @click="setComp('feat', 15, 0.15)">FEATURE</button>
-                    <button class="comp-btn" :class="{active: complexity==='deep'}" @click="setComp('deep', 30, 0.2)">DEEP</button>
-                </div>
-            </div>
-            
-            <div class="result-card" :class="{'red-zone': rawTotal >= 10}">
-                <div>
-                    <label :style="rawTotal >= 10 ? 'color: #ef4444' : ''">Estimated Session Burn</label>
-                    <div class="total-price" x-text="'$' + formattedTotal"></div>
-                    <div class="model-badge" x-text="modelName"></div>
-                </div>
-                
-                <button class="btn-action copy-btn" @click="copy()">Copy Full Quote</button>
-                
-                <a href="https://buymeacoffee.com/tokenburn" target="_blank" class="btn-action coffee-btn">☕ Buy Me a Coffee</a>
-
-                <div class="support-meta-wrap">
-                    <div class="support-row"><span class="support-key">Monthly Hosting</span><span style="font-weight:600; color:#fff;">$14.00</span></div>
-                    <div class="support-row"><span class="support-key">API Maintenance</span><span style="font-weight:600; color:#fff;">$28.50</span></div>
-                    <div class="support-row"><span class="support-key">Beta Status</span><span style="color:#fbbf24; font-weight:600;">OPEN ACCESS</span></div>
-                </div>
-            </div>
-        </div>
-
-        <footer>
-            <div class="footer-links">
-                <button @click="alert('Standard beta terms apply.')">Terms</button>
-                <button @click="alert('No personal data is stored or tracked.')">Privacy</button>
-            </div>
-            <div style="color: #666;">&copy; 2026 TOKENBURN.ORG</div>
-        </footer>
-    </div>
-
-    <script>
-        function burnEngine() {
-            return {
-                inputTokens: 2000,
-                loops: 30,
-                complexity: 'deep',
-                factor: 0.2,
-                selectedModel: "0.0300",
-                modelName: "GPT-5.5 Max",
-                rawTotal: 0,
-                formattedTotal: "0.00",
-                init() {
-                    this.updateCalc();
-                    this.$watch('inputTokens', () => this.updateCalc());
-                    this.$watch('loops', () => this.updateCalc());
-                    this.$watch('selectedModel', () => this.updateCalc());
-                    this.$watch('factor', () => this.updateCalc());
-                },
-                updateModelName(e) {
-                    this.modelName = e.target.options[e.target.selectedIndex].text.split(' — ')[0];
-                },
-                setComp(c, l, f) {
-                    this.complexity = c;
-                    this.loops = l;
-                    this.factor = f;
-                },
-                updateCalc() {
-                    const price = parseFloat(this.selectedModel);
-                    this.rawTotal = (this.inputTokens * Math.pow(1 + this.factor, this.loops)) * (price / 1000);
-                    this.formattedTotal = this.rawTotal.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
-                },
-                copy() {
-                    const text = `TokenBurn Estimate: $${this.formattedTotal} using ${this.modelName}`;
-                    navigator.clipboard.writeText(text);
-                    alert('Quote Copied');
-                }
-            }
-        }
-    </script>
-</body>
-</html>
+        footer button { background: none; border: none; color: #fff; text-decoration: underline;
