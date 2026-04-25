@@ -17,37 +17,43 @@
         .green { color: #a3e635; }
         .main-grid { display: grid; grid-template-columns: 1fr; gap: 30px; align-items: start; }
         @media (min-width: 900px) { .main-grid { grid-template-columns: 1.8fr 1.2fr; } }
+        
         .card { background: #0a0a0a; border: 1px solid #1a2e1a; padding: 30px; border-radius: 12px; }
         
+        /* RESULT CARD ORDER FIXED */
         .result-card { background: #000; border: 2px solid #a3e635; padding: 35px 25px; border-radius: 12px; display: flex; flex-direction: column; text-align: center; }
         .total-price { font-size: 64px; font-weight: 800; margin: 10px 0; color: #fff; letter-spacing: -2px; }
-        .model-badge { font-size: 12px; color: #a3e635; text-transform: uppercase; font-weight: 800; margin-bottom: 20px; }
+        .model-badge { font-size: 12px; color: #a3e635; text-transform: uppercase; font-weight: 800; margin-bottom: 25px; }
         
-        .btn-action { display: block; text-decoration: none; text-align: center; padding: 18px; border-radius: 10px; font-size: 13px; font-weight: 900; text-transform: uppercase; cursor: pointer; width: 100%; border: none; }
+        .btn-action { display: block; text-decoration: none; text-align: center; padding: 18px; border-radius: 10px; font-size: 13px; font-weight: 900; text-transform: uppercase; cursor: pointer; width: 100%; border: none; transition: opacity 0.2s; }
+        .btn-action:hover { opacity: 0.9; }
         .copy-btn { background: transparent; color: #a3e635; border: 2px solid #a3e635; margin-bottom: 12px; }
         .coffee-btn { background: #fbbf24; color: #000 !important; margin-bottom: 30px; }
 
+        /* METADATA AT BOTTOM */
         .support-meta-wrap { text-align: left; border-top: 1px solid #222; padding-top: 20px; }
         .support-row { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 12px; }
         .support-key { color: #AAA; text-transform: uppercase; font-weight: 800; }
         
+        /* INPUTS */
         .input-group { margin-bottom: 30px; }
         label { display: block; font-size: 11px; font-weight: 800; color: #a3e635; text-transform: uppercase; margin-bottom: 12px; }
         select { width: 100%; background: #111; color: #fbbf24; border: 1px solid #333; padding: 16px; border-radius: 8px; font-size: 15px; appearance: none; }
-        input[type="range"] { width: 100%; height: 10px; background: #222; accent-color: #fbbf24; cursor: pointer; }
+        input[type="range"] { width: 100%; height: 10px; background: #222; accent-color: #fbbf24; cursor: pointer; margin-top: 10px; }
         .big-num { color: #fbbf24; font-size: 24px; font-weight: 700; }
         .comp-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
         .comp-btn { background: transparent; color: #a3e635; border: 1px solid #a3e63544; padding: 15px 5px; border-radius: 8px; cursor: pointer; font-size: 11px; font-weight: 800; }
         .comp-btn.active { background: #a3e635; color: #000; }
 
         footer { margin-top: 80px; display: flex; justify-content: space-between; border-top: 1px solid #333; padding: 40px 0; font-size: 12px; width: 100%; }
-        .footer-links { display: flex; gap: 20px; }
+        .footer-links { display: flex; gap: 25px; }
         footer button { background: none; border: none; color: #fff; text-decoration: underline; cursor: pointer; font-weight: 700; text-transform: uppercase; padding: 0; }
     </style>
 </head>
 <body x-data="burnEngine()">
     <div class="container">
         <header><h1>TOKEN<span class="yellow">BURN</span><span class="green">.ORG</span></h1></header>
+        
         <div class="main-grid">
             <div class="card">
                 <div class="input-group">
@@ -65,14 +71,17 @@
                         <option value="0.0300">GPT-5.5 Max — $0.0300</option>
                     </select>
                 </div>
+                
                 <div class="input-group">
                     <div style="display: flex; justify-content: space-between;"><label>Prompt Context</label><span class="big-num" x-text="parseInt(inputTokens).toLocaleString()"></span></div>
                     <input type="range" min="1000" max="1000000" step="1000" x-model="inputTokens">
                 </div>
+                
                 <div class="input-group">
                     <div style="display: flex; justify-content: space-between;"><label>Agent Loops</label><span class="big-num" x-text="loops"></span></div>
                     <input type="range" min="1" max="50" x-model="loops">
                 </div>
+                
                 <div class="comp-grid">
                     <button class="comp-btn" :class="{active: complexity==='simple'}" @click="setComp('simple', 5, 0.1)">SIMPLE</button>
                     <button class="comp-btn" :class="{active: complexity==='feat'}" @click="setComp('feat', 15, 0.15)">FEATURE</button>
@@ -83,4 +92,60 @@
             <div class="result-card">
                 <div>
                     <label>Estimated Session Burn</label>
-                    <div class="
+                    <div class="total-price" x-text="'$' + calc()"></div>
+                    <div class="model-badge" x-text="modelName"></div>
+                </div>
+                
+                <button class="btn-action copy-btn" @click="copy()">Copy Full Quote</button>
+                
+                <a href="https://buymeacoffee.com/tokenburn" target="_blank" class="btn-action coffee-btn">☕ Buy Me a Coffee</a>
+
+                <div class="support-meta-wrap">
+                    <div class="support-row"><span class="support-key">Monthly Hosting</span><span style="font-weight:600; color:#fff;">$14.00</span></div>
+                    <div class="support-row"><span class="support-key">API Maintenance</span><span style="font-weight:600; color:#fff;">$28.50</span></div>
+                    <div class="support-row"><span class="support-key">Beta Status</span><span style="color:#fbbf24; font-weight:600;">OPEN ACCESS</span></div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <div class="footer-links">
+                <button @click="alert('Standard beta terms apply.')">Terms</button>
+                <button @click="alert('No personal data is stored or tracked.')">Privacy</button>
+            </div>
+            <div style="color: #666;">&copy; 2026 TOKENBURN.ORG</div>
+        </footer>
+    </div>
+
+    <script>
+        function burnEngine() {
+            return {
+                inputTokens: 2000,
+                loops: 30,
+                complexity: 'deep',
+                factor: 0.2,
+                selectedModel: "0.0300",
+                modelName: "GPT-5.5 Max",
+                updateModelName(e) {
+                    this.modelName = e.target.options[e.target.selectedIndex].text.split(' — ')[0];
+                },
+                setComp(c, l, f) {
+                    this.complexity = c;
+                    this.loops = l;
+                    this.factor = f;
+                },
+                calc() {
+                    const price = parseFloat(this.selectedModel);
+                    const total = (this.inputTokens * Math.pow(1 + this.factor, this.loops)) * (price / 1000);
+                    return total.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+                },
+                copy() {
+                    const text = `TokenBurn Estimate: $${this.calc()} using ${this.modelName}`;
+                    navigator.clipboard.writeText(text);
+                    alert('Quote Copied');
+                }
+            }
+        }
+    </script>
+</body>
+</html>
