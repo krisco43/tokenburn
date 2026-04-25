@@ -28,22 +28,32 @@
         
         .card { background: #0a0a0a; border: 1px solid #1a2e1a; padding: 30px; border-radius: 12px; }
         
-        /* RESULT CARD ORDER FIXED */
-        .result-card { background: #000; border: 2px solid #a3e635; padding: 35px 25px; border-radius: 12px; display: flex; flex-direction: column; text-align: center; }
+        .result-card { background: #000; border: 2px solid #a3e635; padding: 35px 25px; border-radius: 12px; display: flex; flex-direction: column; text-align: center; transition: all 0.5s ease; }
+        
+        /* THE RED ZONE FEATURE */
+        .red-zone { border-color: #ef4444 !important; background: radial-gradient(circle, #220000 0%, #000 100%); animation: redPulse 3s infinite; }
+        .red-zone .total-price { color: #ef4444; }
+        .red-zone .model-badge { color: #ef4444; }
+
+        @keyframes redPulse {
+            0% { box-shadow: 0 0 0px rgba(239, 68, 68, 0); }
+            50% { box-shadow: 0 0 25px rgba(239, 68, 68, 0.2); }
+            100% { box-shadow: 0 0 0px rgba(239, 68, 68, 0); }
+        }
+
         .total-price { font-size: 64px; font-weight: 800; margin: 10px 0; color: #fff; letter-spacing: -2px; }
         .model-badge { font-size: 12px; color: #a3e635; text-transform: uppercase; font-weight: 800; margin-bottom: 25px; }
         
         .btn-action { display: block; text-decoration: none; text-align: center; padding: 18px; border-radius: 10px; font-size: 13px; font-weight: 900; text-transform: uppercase; cursor: pointer; width: 100%; border: none; transition: opacity 0.2s; }
         .btn-action:hover { opacity: 0.9; }
         .copy-btn { background: transparent; color: #a3e635; border: 2px solid #a3e635; margin-bottom: 12px; }
+        .red-zone .copy-btn { color: #ef4444; border-color: #ef4444; }
         .coffee-btn { background: #fbbf24; color: #000 !important; margin-bottom: 30px; }
 
-        /* METADATA AT BOTTOM */
         .support-meta-wrap { text-align: left; border-top: 1px solid #222; padding-top: 20px; }
         .support-row { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 12px; }
         .support-key { color: #AAA; text-transform: uppercase; font-weight: 800; }
         
-        /* INPUTS */
         .input-group { margin-bottom: 30px; }
         label { display: block; font-size: 11px; font-weight: 800; color: #a3e635; text-transform: uppercase; margin-bottom: 12px; }
         select { width: 100%; background: #111; color: #fbbf24; border: 1px solid #333; padding: 16px; border-radius: 8px; font-size: 15px; appearance: none; }
@@ -97,10 +107,10 @@
                 </div>
             </div>
             
-            <div class="result-card">
+            <div class="result-card" :class="{'red-zone': rawTotal >= 10}">
                 <div>
-                    <label>Estimated Session Burn</label>
-                    <div class="total-price" x-text="'$' + calc()"></div>
+                    <label :style="rawTotal >= 10 ? 'color: #ef4444' : ''">Estimated Session Burn</label>
+                    <div class="total-price" x-text="'$' + formattedTotal"></div>
                     <div class="model-badge" x-text="modelName"></div>
                 </div>
                 
@@ -134,6 +144,15 @@
                 factor: 0.2,
                 selectedModel: "0.0300",
                 modelName: "GPT-5.5 Max",
+                rawTotal: 0,
+                formattedTotal: "0.00",
+                init() {
+                    this.updateCalc();
+                    this.$watch('inputTokens', () => this.updateCalc());
+                    this.$watch('loops', () => this.updateCalc());
+                    this.$watch('selectedModel', () => this.updateCalc());
+                    this.$watch('factor', () => this.updateCalc());
+                },
                 updateModelName(e) {
                     this.modelName = e.target.options[e.target.selectedIndex].text.split(' — ')[0];
                 },
@@ -142,13 +161,13 @@
                     this.loops = l;
                     this.factor = f;
                 },
-                calc() {
+                updateCalc() {
                     const price = parseFloat(this.selectedModel);
-                    const total = (this.inputTokens * Math.pow(1 + this.factor, this.loops)) * (price / 1000);
-                    return total.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+                    this.rawTotal = (this.inputTokens * Math.pow(1 + this.factor, this.loops)) * (price / 1000);
+                    this.formattedTotal = this.rawTotal.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
                 },
                 copy() {
-                    const text = `TokenBurn Estimate: $${this.calc()} using ${this.modelName}`;
+                    const text = `TokenBurn Estimate: $${this.formattedTotal} using ${this.modelName}`;
                     navigator.clipboard.writeText(text);
                     alert('Quote Copied');
                 }
