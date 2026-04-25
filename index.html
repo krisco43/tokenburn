@@ -27,18 +27,20 @@
         
         .card { background: #0a0a0a; border: 1px solid #1a2e1a; padding: 30px; border-radius: 12px; }
         
-        .result-card { background: #000; border: 2px solid #a3e635; padding: 35px 25px; border-radius: 12px; display: flex; flex-direction: column; text-align: center; transition: all 0.4s ease; position: relative; overflow: hidden; }
+        /* RESULT CARD BASE */
+        .result-card { background: #000; border: 2px solid #a3e635; padding: 35px 25px; border-radius: 12px; display: flex; flex-direction: column; text-align: center; transition: all 0.4s ease; position: relative; }
         
-        /* THE RED ZONE PULSE */
-        .red-zone { border-color: #ef4444 !important; background: #1a0505 !important; animation: redPulse 2s infinite ease-in-out; }
-        .red-zone .total-price { color: #ef4444 !important; }
-        .red-zone .model-badge { color: #ef4444 !important; }
-        .red-zone label { color: #ef4444 !important; }
+        /* HIGH CONTRAST RED ZONE */
+        .red-zone { border-color: #ff4d4d !important; background: #220505 !important; animation: redPulse 2s infinite ease-in-out; }
+        .red-zone .total-price { color: #ff4d4d !important; }
+        .red-zone .model-badge { color: #ff4d4d !important; }
+        .red-zone label { color: #ff4d4d !important; }
+        .red-zone .copy-btn { color: #ff4d4d !important; border-color: #ff4d4d !important; }
 
         @keyframes redPulse {
-            0% { box-shadow: 0 0 0px rgba(239, 68, 68, 0); }
-            50% { box-shadow: 0 0 30px rgba(239, 68, 68, 0.3); background: #2a0808 !important; }
-            100% { box-shadow: 0 0 0px rgba(239, 68, 68, 0); }
+            0% { box-shadow: 0 0 0px rgba(255, 77, 77, 0); }
+            50% { box-shadow: 0 0 35px rgba(255, 77, 77, 0.4); background: #330808 !important; }
+            100% { box-shadow: 0 0 0px rgba(255, 77, 77, 0); }
         }
 
         .total-price { font-size: 64px; font-weight: 800; margin: 10px 0; color: #fff; letter-spacing: -2px; }
@@ -47,7 +49,6 @@
         .btn-action { display: block; text-decoration: none; text-align: center; padding: 18px; border-radius: 10px; font-size: 13px; font-weight: 900; text-transform: uppercase; cursor: pointer; width: 100%; border: none; transition: opacity 0.2s; }
         .btn-action:hover { opacity: 0.9; }
         .copy-btn { background: transparent; color: #a3e635; border: 2px solid #a3e635; margin-bottom: 12px; }
-        .red-zone .copy-btn { color: #ef4444; border-color: #ef4444; }
         .coffee-btn { background: #fbbf24; color: #000 !important; margin-bottom: 30px; }
 
         .support-meta-wrap { text-align: left; border-top: 1px solid #222; padding-top: 20px; }
@@ -56,16 +57,27 @@
         
         .input-group { margin-bottom: 30px; }
         label { display: block; font-size: 11px; font-weight: 800; color: #a3e635; text-transform: uppercase; margin-bottom: 12px; }
-        select { width: 100%; background: #111; color: #fbbf24; border: 1px solid #333; padding: 16px; border-radius: 8px; font-size: 15px; appearance: none; }
+        select { width: 100%; background: #111; color: #fbbf24; border: 1px solid #333; padding: 16px; border-radius: 8px; font-size: 15px; appearance: none; cursor: pointer; }
         input[type="range"] { width: 100%; height: 10px; background: #222; accent-color: #fbbf24; cursor: pointer; margin-top: 10px; }
         .big-num { color: #fbbf24; font-size: 24px; font-weight: 700; }
         .comp-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-        .comp-btn { background: transparent; color: #a3e635; border: 1px solid #a3e63544; padding: 15px 5px; border-radius: 8px; cursor: pointer; font-size: 11px; font-weight: 800; }
-        .comp-btn.active { background: #a3e635; color: #000; }
+        .comp-btn { background: transparent; color: #a3e635; border: 1px solid #a3e63544; padding: 15px 5px; border-radius: 8px; cursor: pointer; font-size: 11px; font-weight: 800; transition: all 0.2s; }
+        .comp-btn.active { background: #a3e635; color: #000; border-color: #a3e635; }
 
         footer { margin-top: 80px; display: flex; justify-content: space-between; border-top: 1px solid #333; padding: 40px 0; font-size: 12px; width: 100%; }
         .footer-links { display: flex; gap: 25px; }
-        footer button { background: none; border: none; color: #fff; text-decoration: underline; cursor: pointer; font-weight: 700; text-transform: uppercase; padding: 0; }
+        
+        /* FOOTER BUTTONS - NO UNDERLINE */
+        footer button { 
+            background: none; 
+            border: none; 
+            color: #fff; 
+            text-decoration: none; 
+            cursor: pointer; 
+            font-weight: 700; 
+            text-transform: uppercase; 
+            padding: 0; 
+        }
     </style>
 </head>
 <body x-data="burnEngine()">
