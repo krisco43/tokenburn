@@ -6,196 +6,112 @@
     <title>TokenBurn | AI Agent Cost Estimator</title>
     <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-
     <style>
         [x-cloak] { display: none !important; }
         * { font-family: "Inter", sans-serif !important; box-sizing: border-box; }
-        
-        body { 
-            background-color: #000000; color: #ffffff; margin: 0; padding: 40px 20px; 
-            display: flex; flex-direction: column; align-items: center; min-height: 100vh;
-        }
-
-        .container { max-width: 1100px; width: 100%; flex: 1; }
+        body { background: #000; color: #fff; margin: 0; padding: 40px 20px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
+        .container { max-width: 1100px; width: 100%; }
         header { text-align: center; margin-bottom: 50px; }
-        h1 { font-size: clamp(2.5rem, 8vw, 4rem); margin: 0; font-weight: 700; letter-spacing: -3px; text-transform: uppercase; line-height: 0.9; }
+        h1 { font-size: clamp(2.5rem, 8vw, 4rem); font-weight: 900; letter-spacing: -3px; text-transform: uppercase; margin: 0; line-height: 0.9; }
         .yellow { color: #fbbf24; }
         .green { color: #a3e635; }
-
         .main-grid { display: grid; grid-template-columns: 1fr; gap: 30px; align-items: start; }
         @media (min-width: 900px) { .main-grid { grid-template-columns: 1.8fr 1.2fr; } }
-
         .card { background: #0a0a0a; border: 1px solid #1a2e1a; padding: 30px; border-radius: 12px; }
-        .result-card { background: #000; border: 2px solid #a3e635; text-align: center; padding: 35px 25px; border-radius: 12px; box-shadow: 0 0 30px rgba(163, 230, 53, 0.1); }
-
+        .result-card { background: #000; border: 2px solid #a3e635; text-align: center; padding: 35px 25px; border-radius: 12px; min-height: 400px; display: flex; flex-direction: column; }
         .input-group { margin-bottom: 30px; }
-        label { display: block; font-size: 11px; font-weight: 800; color: #a3e635; text-transform: uppercase; margin-bottom: 15px; letter-spacing: 0.1em; }
-
-        select { 
-            width: 100%; background: #111; color: #fbbf24; border: 1px solid #333; 
-            padding: 16px; border-radius: 8px; font-size: 15px; appearance: none;
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fbbf24' stroke-width='3'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e"); 
-            background-repeat: no-repeat; background-position: right 1.2rem center; background-size: 1.1em;
-        }
-        select option { background: #111; }
-        select option:nth-child(odd) { color: #fbbf24; }
-        select option:nth-child(even) { color: #ffffff; }
-
-        input[type="range"] { width: 100%; height: 10px; background: #222; accent-color: #fbbf24; margin-top: 15px; cursor: pointer; }
+        label { display: block; font-size: 11px; font-weight: 800; color: #a3e635; text-transform: uppercase; margin-bottom: 12px; letter-spacing: 0.1em; }
+        select { width: 100%; background: #111; color: #fbbf24; border: 1px solid #333; padding: 16px; border-radius: 8px; font-size: 15px; appearance: none; background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fbbf24' stroke-width='3'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e"); background-repeat: no-repeat; background-position: right 1.2rem center; background-size: 1.1em; }
+        input[type="range"] { width: 100%; height: 10px; background: #222; accent-color: #fbbf24; cursor: pointer; margin-top: 15px; }
         .big-num { color: #fbbf24; font-size: 24px; font-weight: 700; }
-
-        .complexity-toggle { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-        .complexity-btn { 
-            background: transparent; color: #a3e635; border: 1px solid rgba(163, 230, 53, 0.4); 
-            padding: 22px 15px; border-radius: 10px; cursor: pointer; text-align: left; 
-        }
+        .complexity-btn { background: transparent; color: #a3e635; border: 1px solid #a3e63544; padding: 22px 10px; border-radius: 10px; cursor: pointer; text-align: left; }
         .complexity-btn.active { background: #a3e635; color: #000; border-color: #a3e635; }
-
-        .total-price { font-size: 52px; font-weight: 800; margin: 15px 0; color: #FFFFFF; letter-spacing: -2px; }
-
-        .support-meta-wrap { margin-top: 25px; padding-top: 20px; border-top: 1px solid #222; text-align: left; }
+        .total-price { font-size: 52px; font-weight: 800; margin: 15px 0; color: #fff; letter-spacing: -2px; }
         .support-row { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 12px; }
-        .support-key { color: #AAAAAA; text-transform: uppercase; font-weight: 800; }
-        .support-val { color: #FFFFFF; font-weight: 600; }
-
-        .btn-action { 
-            display: block; text-decoration: none; text-align: center; padding: 18px; 
-            border-radius: 10px; font-size: 13px; font-weight: 900; text-transform: uppercase; 
-            cursor: pointer; width: 100%; margin-top: 15px;
-        }
-        .copy-btn { background: transparent; color: #a3e635; border: 2px solid #a3e635; }
-        .coffee-btn { background: #fbbf24; color: #000 !important; border: none; margin-bottom: 20px; }
-
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 100; display: flex; align-items: center; justify-content: center; padding: 20px; }
-        .modal-content { background: #0a0a0a; border: 1px solid #a3e635; padding: 40px; border-radius: 12px; max-width: 600px; width: 100%; position: relative; }
-        .close-modal { position: absolute; top: 20px; right: 20px; color: #a3e635; cursor: pointer; font-weight: 900; }
-
-        footer { margin-top: 80px; width: 100%; max-width: 1100px; display: flex; justify-content: space-between; border-top: 1px solid #333; padding: 40px 0; font-size: 12px; }
-        .footer-links { display: flex; gap: 30px; }
-        footer button { background: none; border: none; color: #FFFFFF; text-decoration: underline; font-weight: 700; text-transform: uppercase; cursor: pointer; padding: 0; }
-        .copyright { color: #888; font-weight: 600; text-transform: uppercase; }
+        .support-key { color: #AAA; text-transform: uppercase; font-weight: 800; }
+        .btn-action { display: block; text-decoration: none; text-align: center; padding: 18px; border-radius: 10px; font-size: 13px; font-weight: 900; text-transform: uppercase; cursor: pointer; width: 100%; }
+        .copy-btn { background: transparent; color: #a3e635; border: 2px solid #a3e635; margin-bottom: 20px; }
+        .coffee-btn { background: #fbbf24; color: #000 !important; border: none; }
+        footer { margin-top: 80px; display: flex; justify-content: space-between; border-top: 1px solid #333; padding: 40px 0; font-size: 12px; }
+        footer button { background: none; border: none; color: #fff; text-decoration: underline; cursor: pointer; font-weight: 700; text-transform: uppercase; padding: 0; }
     </style>
 </head>
-
 <body x-data="burnEngine()">
     <div class="container">
-        <header>
-            <h1>TOKEN<span class="yellow">BURN</span><span class="green">.ORG</span></h1>
-        </header>
-
+        <header><h1>TOKEN<span class="yellow">BURN</span><span class="green">.ORG</span></h1></header>
         <div class="main-grid">
             <div class="card">
                 <div class="input-group">
                     <label>Intelligence Engine</label>
-                    <select x-model="selectedModel">
-                        <template x-for="m in modelList" :key="m.name">
-                            <option :value="m.name" x-text="m.name + ' — $' + m.per1k.toFixed(4)"></option>
-                        </template>
+                    <select x-model="selectedModel" @change="updateModelName($event)">
+                        <option value="0.0001">DeepSeek V4-Flash — $0.0001</option>
+                        <option value="0.00015">Llama 4-70B — $0.00015</option>
+                        <option value="0.0005">Grok-3 Mini — $0.0005</option>
+                        <option value="0.0008">Claude 4.2 Haiku — $0.0008</option>
+                        <option value="0.0025">GPT-5.5 Mini — $0.0025</option>
+                        <option value="0.0035">DeepSeek V4-Pro — $0.0035</option>
+                        <option value="0.0060">Claude 4.7 Sonnet — $0.0060</option>
+                        <option value="0.0125">Gemini 2.5 Ultra — $0.0125</option>
+                        <option value="0.0150">Claude 4.8 Opus — $0.0150</option>
+                        <option value="0.0300">GPT-5.5 Max — $0.0300</option>
                     </select>
                 </div>
-
                 <div class="input-group">
-                    <div style="display: flex; justify-content: space-between; align-items: baseline;">
-                        <label>Initial Prompt Context</label>
-                        <span class="big-num" x-text="parseInt(inputTokens).toLocaleString()"></span>
-                    </div>
+                    <div style="display: flex; justify-content: space-between;"><label>Prompt Context</label><span class="big-num" x-text="parseInt(inputTokens).toLocaleString()"></span></div>
                     <input type="range" min="1000" max="1000000" step="1000" x-model="inputTokens">
                 </div>
-
                 <div class="input-group">
-                    <div style="display: flex; justify-content: space-between; align-items: baseline;">
-                        <label>Recursive Agent Loops</label>
-                        <span class="big-num" x-text="loops"></span>
-                    </div>
-                    <input type="range" min="1" max="50" step="1" x-model="loops">
+                    <div style="display: flex; justify-content: space-between;"><label>Agent Loops</label><span class="big-num" x-text="loops"></span></div>
+                    <input type="range" min="1" max="50" x-model="loops">
                 </div>
-
-                <div class="input-group">
-                    <label>Complexity Profile</label>
-                    <div class="complexity-toggle">
-                        <button type="button" class="complexity-btn" :class="{ active: complexity === 'simple' }" @click="applyComplexity('simple')">
-                            <span style="display:block; font-size: 13px; font-weight:800;">[01] SIMPLE</span>
-                            <span style="font-size: 10px; opacity:0.8;">5 LOOPS // 10%</span>
-                        </button>
-                        <button type="button" class="complexity-btn" :class="{ active: complexity === 'feature' }" @click="applyComplexity('feature')">
-                            <span style="display:block; font-size: 13px; font-weight:800;">[02] FEATURE</span>
-                            <span style="font-size: 10px; opacity:0.8;">15 LOOPS // 15%</span>
-                        </button>
-                        <button type="button" class="complexity-btn" :class="{ active: complexity === 'deep' }" @click="applyComplexity('deep')">
-                            <span style="display:block; font-size: 13px; font-weight:800;">[03] DEEP</span>
-                            <span style="font-size: 10px; opacity:0.8;">30 LOOPS // 20%</span>
-                        </button>
-                    </div>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;">
+                    <button class="complexity-btn" :class="{active: complexity==='simple'}" @click="setComp('simple', 5, 0.1)">SIMPLE</button>
+                    <button class="complexity-btn" :class="{active: complexity==='feat'}" @click="setComp('feat', 15, 0.15)">FEATURE</button>
+                    <button class="complexity-btn" :class="{active: complexity==='deep'}" @click="setComp('deep', 30, 0.2)">DEEP</button>
                 </div>
             </div>
-
+            
             <div class="result-card">
-                <a href="https://buymeacoffee.com/tokenburn" target="_blank" class="btn-action coffee-btn">☕ Buy Me a Coffee</a>
-                <label>Estimated Session Burn</label>
-                <div class="total-price" x-text="'$' + calculateTotal()"></div>
-                <p style="font-size: 12px; color: #a3e635; text-transform: uppercase; font-weight: 800; margin-bottom: 20px;" x-text="selectedModel"></p>
-                <div class="support-meta-wrap">
-                    <div class="support-row"><span class="support-key">Monthly Hosting</span><span class="support-val">$14.00</span></div>
-                    <div class="support-row"><span class="support-key">API Maintenance</span><span class="support-val">$28.50</span></div>
-                    <div class="support-row"><span class="support-key">Beta Status</span><span class="support-val" style="color:#fbbf24;">OPEN ACCESS</span></div>
+                <div style="flex-grow: 1;">
+                    <label>Estimated Session Burn</label>
+                    <div class="total-price" x-text="'$' + calc()"></div>
+                    <div style="font-size: 12px; color: #a3e635; text-transform: uppercase; font-weight: 800;" x-text="modelName"></div>
                 </div>
-                <button type="button" class="btn-action copy-btn" @click="copyQuote()">Copy Full Quote</button>
+                
+                <div style="text-align: left; margin-bottom: 20px; border-top: 1px solid #222; padding-top: 20px;">
+                    <div class="support-row"><span class="support-key">Monthly Hosting</span><span style="font-weight:600;">$14.00</span></div>
+                    <div class="support-row"><span class="support-key">API Maintenance</span><span style="font-weight:600;">$28.50</span></div>
+                    <div class="support-row"><span class="support-key">Beta Status</span><span style="color:#fbbf24; font-weight:600;">OPEN ACCESS</span></div>
+                </div>
+                
+                <button class="btn-action copy-btn" @click="copy()">Copy Full Quote</button>
+                <a href="https://buymeacoffee.com/tokenburn" target="_blank" class="btn-action coffee-btn">☕ Buy Me a Coffee</a>
             </div>
         </div>
-
         <footer>
             <div class="footer-links">
-                <button @click="openModal('Terms of Use', 'TokenBurn is in Private Beta. Use is for estimation only. No commercial redistribution of data.')">Terms</button>
-                <button @click="openModal('Privacy Policy', 'Calculations happen client-side. We do not store or transmit your tokens.')">Privacy</button>
-                <button @click="openModal('Contact Support', 'Email: support@tokenburn.org for API or integration issues.')">Support</button>
+                <button @click="openModal('Terms', 'Private Beta. Estimation only.')">Terms</button>
+                <button @click="openModal('Privacy', 'No data stored.')">Privacy</button>
             </div>
-            <div class="copyright">&copy; 2026 TOKENBURN.ORG // PRIVATE BETA</div>
+            <div style="color: #888;">&copy; 2026 TOKENBURN.ORG</div>
         </footer>
     </div>
-
     <div class="modal-overlay" x-show="modalOpen" x-cloak @click.self="modalOpen = false">
-        <div class="modal-content">
-            <span class="close-modal" @click="modalOpen = false">[X] ESC</span>
-            <h2 class="green" x-text="modalTitle" style="text-transform: uppercase; margin-top: 0;"></h2>
-            <p style="line-height: 1.6; color: #ccc;" x-text="modalText"></p>
-        </div>
+        <div class="modal-content"><h2 x-text="mTitle" class="green"></h2><p x-text="mText"></p></div>
     </div>
-
     <script>
         function burnEngine() {
             return {
-                modalOpen: false, modalTitle: '', modalText: '',
-                inputTokens: 2000, loops: 30, complexity: 'deep', compoundingFactor: 0.20,
-                selectedModel: 'GPT-5.5 Max',
-                modelList: [
-                    { name: 'DeepSeek V4-Flash', per1k: 0.0001 },
-                    { name: 'Llama 4-70B', per1k: 0.00015 },
-                    { name: 'Grok-3 Mini', per1k: 0.0005 },
-                    { name: 'Claude 4.2 Haiku', per1k: 0.0008 },
-                    { name: 'GPT-5.5 Mini', per1k: 0.0025 },
-                    { name: 'DeepSeek V4-Pro', per1k: 0.0035 },
-                    { name: 'Claude 4.7 Sonnet', per1k: 0.0060 },
-                    { name: 'Gemini 2.5 Ultra', per1k: 0.0125 },
-                    { name: 'Claude 4.8 Opus', per1k: 0.0150 },
-                    { name: 'GPT-5.5 Max', per1k: 0.0300 }
-                ],
-                applyComplexity(level) {
-                    this.complexity = level;
-                    if (level === 'simple') { this.loops = 5; this.compoundingFactor = 0.10; }
-                    if (level === 'feature') { this.loops = 15; this.compoundingFactor = 0.15; }
-                    if (level === 'deep') { this.loops = 30; this.compoundingFactor = 0.20; }
-                },
-                openModal(t, txt) { this.modalTitle = t; this.modalText = txt; this.modalOpen = true; },
-                calculateTotal() {
-                    const model = this.modelList.find(m => m.name === this.selectedModel);
-                    const total = (this.inputTokens * Math.pow(1 + this.compoundingFactor, this.loops)) * (model.per1k / 1000);
+                modalOpen: false, mTitle: '', mText: '', inputTokens: 2000, loops: 30, complexity: 'deep', factor: 0.2, selectedModel: "0.0300", modelName: "GPT-5.5 Max",
+                updateModelName(e) { this.modelName = e.target.options[e.target.selectedIndex].text.split(' — ')[0]; },
+                setComp(c, l, f) { this.complexity = c; this.loops = l; this.factor = f; },
+                openModal(t, tx) { this.mTitle = t; this.mText = tx; this.modalOpen = true; },
+                calc() {
+                    const price = parseFloat(this.selectedModel);
+                    const total = (this.inputTokens * Math.pow(1 + this.factor, this.loops)) * (price / 1000);
                     return total.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
                 },
-                async copyQuote() {
-                    const report = `TOKENBURN ESTIMATE\nModel: ${this.selectedModel}\nTotal Burn: $${this.calculateTotal()}\nTimestamp: ${new Date().toLocaleString()}`;
-                    await navigator.clipboard.writeText(report);
-                    alert("Quote copied to clipboard.");
-                }
+                copy() { navigator.clipboard.writeText('Burn Estimate: $' + this.calc()); alert('Copied'); }
             }
         }
     </script>
