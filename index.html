@@ -61,13 +61,12 @@
         .comp-btn { background: transparent; color: #fff; border: 1px solid #444; padding: 15px 5px; border-radius: 8px; cursor: pointer; font-size: 11px; font-weight: 800; transition: 0.2s; }
         .comp-btn.active { background: #a3e635; color: #000; border-color: #a3e635; }
 
-        /* FOOTER REWRITE FOR LEGIBILITY */
         footer { margin-top: 80px; display: flex; justify-content: space-between; border-top: 1px solid #333; padding: 40px 0; width: 100%; }
         .footer-links { display: flex; gap: 30px; }
         footer button { 
             background: none; 
             border: none; 
-            color: #f0f0f0; /* Crisp Off-White */
+            color: #f0f0f0; 
             text-decoration: none; 
             cursor: pointer; 
             font-weight: 800; 
@@ -78,7 +77,7 @@
         }
         footer button:hover { color: #fbbf24; }
         .copyright { 
-            color: #d1d1d1; /* Light Gray for clear contrast */
+            color: #d1d1d1; 
             font-weight: 600; 
             font-size: 13px;
             letter-spacing: 0.5px;
@@ -95,10 +94,15 @@
                     <label>Intelligence Engine</label>
                     <select x-model="selectedModel" @change="updateModelName($event)">
                         <option value="0.0001">DeepSeek V4-Flash — $0.0001</option>
+                        <option value="0.00015">Llama 4-70B — $0.00015</option>
                         <option value="0.0005">Grok-3 Mini — $0.0005</option>
+                        <option value="0.0008">Claude 4.2 Haiku — $0.0008</option>
                         <option value="0.0025">GPT-5.5 Mini — $0.0025</option>
+                        <option value="0.0035">DeepSeek V4-Pro — $0.0035</option>
                         <option value="0.0060">Claude 4.7 Sonnet — $0.0060</option>
-                        <option value="0.0300">GPT-5.5 Max — $0.0300</option>
+                        <option value="0.0125">Gemini 2.5 Ultra — $0.0125</option>
+                        <option value="0.0150">Claude 4.8 Opus — $0.0150</option>
+                        <option value="0.0300" selected>GPT-5.5 Max — $0.0300</option>
                     </select>
                 </div>
                 
