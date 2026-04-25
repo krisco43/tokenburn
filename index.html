@@ -27,9 +27,9 @@
         
         .card { background: #0a0a0a; border: 1px solid #1a2e1a; padding: 30px; border-radius: 12px; }
         
-        .result-card { background: #000; border: 2px solid #a3e635; padding: 35px 25px; border-radius: 12px; display: flex; flex-direction: column; text-align: center; transition: all 0.4s ease; }
+        .result-card { background: #000; border: 2px solid #a3e635; padding: 35px 25px; border-radius: 12px; display: flex; flex-direction: column; text-align: center; transition: all 0.4s ease; position: relative; overflow: hidden; }
         
-        /* UPDATED RED ZONE */
+        /* THE RED ZONE PULSE */
         .red-zone { border-color: #ef4444 !important; background: #1a0505 !important; animation: redPulse 2s infinite ease-in-out; }
         .red-zone .total-price { color: #ef4444 !important; }
         .red-zone .model-badge { color: #ef4444 !important; }
@@ -37,7 +37,7 @@
 
         @keyframes redPulse {
             0% { box-shadow: 0 0 0px rgba(239, 68, 68, 0); }
-            50% { box-shadow: 0 0 30px rgba(239, 68, 68, 0.4); background: #2a0808 !important; }
+            50% { box-shadow: 0 0 30px rgba(239, 68, 68, 0.3); background: #2a0808 !important; }
             100% { box-shadow: 0 0 0px rgba(239, 68, 68, 0); }
         }
 
@@ -69,7 +69,7 @@
     </style>
 </head>
 <body x-data="burnEngine()">
-    <div class="container">
+    <div class="container" x-cloak>
         <header><h1>TOKEN<span class="yellow">BURN</span><span class="green">.ORG</span></h1></header>
         
         <div class="main-grid">
@@ -107,10 +107,10 @@
                 </div>
             </div>
             
-            <div class="result-card" :class="{'red-zone': rawTotal >= 10}">
+            <div class="result-card" :class="{'red-zone': (inputTokens * Math.pow(1 + factor, loops) * (parseFloat(selectedModel) / 1000)) >= 10}">
                 <div>
                     <label>Estimated Session Burn</label>
-                    <div class="total-price" x-text="'$' + formattedTotal"></div>
+                    <div class="total-price" x-text="'$' + calc()"></div>
                     <div class="model-badge" x-text="modelName"></div>
                 </div>
                 
@@ -144,14 +144,6 @@
                 factor: 0.2,
                 selectedModel: "0.0300",
                 modelName: "GPT-5.5 Max",
-                // Getters for automatic reactivity
-                get rawTotal() {
-                    const price = parseFloat(this.selectedModel);
-                    return (this.inputTokens * Math.pow(1 + this.factor, this.loops)) * (price / 1000);
-                },
-                get formattedTotal() {
-                    return this.rawTotal.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
-                },
                 updateModelName(e) {
                     this.modelName = e.target.options[e.target.selectedIndex].text.split(' — ')[0];
                 },
@@ -160,8 +152,13 @@
                     this.loops = l;
                     this.factor = f;
                 },
+                calc() {
+                    const price = parseFloat(this.selectedModel);
+                    const total = (this.inputTokens * Math.pow(1 + this.factor, this.loops)) * (price / 1000);
+                    return total.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+                },
                 copy() {
-                    const text = `TokenBurn Estimate: $${this.formattedTotal} using ${this.modelName}`;
+                    const text = `TokenBurn Estimate: $${this.calc()} using ${this.modelName}`;
                     navigator.clipboard.writeText(text);
                     alert('Quote Copied');
                 }
