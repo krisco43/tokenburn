@@ -8,6 +8,7 @@
       gtag('js', new Date());
       gtag('config', 'G-ZRXDSY5VND');
     </script>
+    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TokenBurn | AI Agent Cost Estimator</title>
@@ -64,7 +65,6 @@
         }
         .comp-btn.active { background: #a3e635; color: #000; border-color: #a3e635; }
         
-        /* ACTUALLY READABLE SUBTEXT */
         .btn-sub { font-size: 11px; opacity: 0.8; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; line-height: 1.4; text-align: center; }
         .comp-btn.active .btn-sub { opacity: 1; }
 
@@ -87,7 +87,7 @@
             <div class="card">
                 <div class="input-group">
                     <label>Intelligence Engine</label>
-                    <select x-model="selectedModel" @change="updateModelName($event)">
+                    <select x-model="selectedModel" @change="updateModelName($event); trackEvent('calculate_burn', 'model_change')">
                         <option value="0.0001">DeepSeek V4-Flash — $0.0001</option>
                         <option value="0.00015">Llama 4-70B — $0.00015</option>
                         <option value="0.0005">Grok-3 Mini — $0.0005</option>
@@ -103,24 +103,24 @@
                 
                 <div class="input-group">
                     <div style="display: flex; justify-content: space-between;"><label>Prompt Context</label><span class="big-num" x-text="parseInt(inputTokens).toLocaleString()"></span></div>
-                    <input type="range" min="1000" max="1000000" step="1000" x-model="inputTokens">
+                    <input type="range" min="1000" max="1000000" step="1000" x-model="inputTokens" @change="trackEvent('calculate_burn', 'context_slider')">
                 </div>
                 
                 <div class="input-group">
                     <div style="display: flex; justify-content: space-between;"><label>Agent Loops</label><span class="big-num" x-text="loops"></span></div>
-                    <input type="range" min="1" max="50" x-model="loops">
+                    <input type="range" min="1" max="50" x-model="loops" @change="trackEvent('calculate_burn', 'loop_slider')">
                 </div>
                 
                 <div class="comp-grid">
-                    <button class="comp-btn" :class="{active: complexity==='simple'}" @click="setComp('simple', 5, 0.1)">
+                    <button class="comp-btn" :class="{active: complexity==='simple'}" @click="setComp('simple', 5, 0.1); trackEvent('calculate_burn', 'preset_simple')">
                         SIMPLE
                         <span class="btn-sub">Basic Chat<br>5 Loops</span>
                     </button>
-                    <button class="comp-btn" :class="{active: complexity==='feat'}" @click="setComp('feat', 15, 0.15)">
+                    <button class="comp-btn" :class="{active: complexity==='feat'}" @click="setComp('feat', 15, 0.15); trackEvent('calculate_burn', 'preset_feature')">
                         FEATURE
                         <span class="btn-sub">Task Execution<br>15 Loops</span>
                     </button>
-                    <button class="comp-btn" :class="{active: complexity==='deep'}" @click="setComp('deep', 30, 0.2)">
+                    <button class="comp-btn" :class="{active: complexity==='deep'}" @click="setComp('deep', 30, 0.2); trackEvent('calculate_burn', 'preset_deep')">
                         DEEP
                         <span class="btn-sub">Recursive RAG<br>30 Loops</span>
                     </button>
@@ -134,8 +134,8 @@
                     <div class="model-badge" x-text="modelName"></div>
                 </div>
                 
-                <button class="btn-action copy-btn" @click="copy()">Copy Full Quote</button>
-                <a href="https://buymeacoffee.com/tokenburn" target="_blank" class="btn-action coffee-btn">☕ Buy Me a Coffee</a>
+                <button class="btn-action copy-btn" @click="copy(); trackEvent('quote_copied', modelName)">Copy Full Quote</button>
+                <a href="https://buymeacoffee.com/tokenburn" target="_blank" class="btn-action coffee-btn" @click="trackEvent('coffee_click', 'sidebar')">☕ Buy Me a Coffee</a>
 
                 <div class="support-meta-wrap">
                     <div class="support-row"><span class="support-key">Monthly Hosting</span><span class="support-val">$14.00</span></div>
@@ -163,19 +163,39 @@
                 factor: 0.2,
                 selectedModel: "0.0300",
                 modelName: "GPT-5.5 Max",
+                
+                init() {
+                    // Deep Engagement Tracker (2 Minutes)
+                    setTimeout(() => {
+                        this.trackEvent('deep_engagement', '2_minutes');
+                    }, 120000);
+                },
+
+                trackEvent(name, label) {
+                    if (typeof gtag === 'function') {
+                        gtag('event', name, {
+                            'event_label': label,
+                            'model_context': this.modelName
+                        });
+                    }
+                },
+
                 updateModelName(e) {
                     this.modelName = e.target.options[e.target.selectedIndex].text.split(' — ')[0];
                 },
+
                 setComp(c, l, f) {
                     this.complexity = c;
                     this.loops = l;
                     this.factor = f;
                 },
+
                 calc() {
                     const price = parseFloat(this.selectedModel);
                     const total = (this.inputTokens * Math.pow(1 + this.factor, this.loops)) * (price / 1000);
                     return total.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
                 },
+
                 copy() {
                     const text = `TokenBurn Estimate: $${this.calc()} using ${this.modelName}`;
                     navigator.clipboard.writeText(text);
